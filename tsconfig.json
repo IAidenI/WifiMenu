@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ES2022",
+    "moduleResolution": "node",
+    "rootDir": "src",
+    "outDir": "dist",
+
+    "strict": true,
+    "skipLibCheck": true,
+
+    "esModuleInterop": false,
+    "allowSyntheticDefaultImports": false,
+
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": false,
+
+    "noEmitOnError": true,
+    "sourceMap": true
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules", "dist"]
+}

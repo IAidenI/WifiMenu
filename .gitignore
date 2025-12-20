@@ -1,0 +1,56 @@
+# =========================
+# Build / dist
+# =========================
+dist/
+build/
+out/
+
+# =========================
+# Node / Bun
+# =========================
+node_modules/
+.bun/
+bun.lock
+
+# =========================
+# TypeScript
+# =========================
+*.tsbuildinfo
+
+# =========================
+# Logs
+# =========================
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+*.log
+
+# =========================
+# OS / Editors
+# =========================
+.DS_Store
+Thumbs.db
+
+# VS Code
+.vscode/
+!.vscode/extensions.json
+
+# JetBrains
+.idea/
+
+# Vim
+*.swp
+*.swo
+
+# =========================
+# GJS / GTK
+# =========================
+*.compiled.js
+.gjs-cache/
+
+# =========================
+# Environment
+# =========================
+.env
+.env.*

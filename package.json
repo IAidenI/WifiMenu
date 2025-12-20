@@ -1,0 +1,15 @@
+{
+  "name": "wifi-menu",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "run": "gjs -m dist/main.js",
+    "dev": "tsc && gjs -m dist/main.js",
+    "clean": "rm -rf dist"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.0"
+  }
+}
