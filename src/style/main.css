@@ -1,14 +1,50 @@
 /* -----------------------------------------------------
+ * Global background
+ * ----------------------------------------------------- */
+/* Rendre la fenêtre transparente */
+window.wifi-window,
+window.wifi-window .background,
+window.wifi-window>contents,
+window.wifi-window>contents>.background {
+  background-color: rgba(20, 20, 20, 0.50);
+}
+
+/* -----------------------------------------------------
+ * Liste des wifis
+ * ----------------------------------------------------- */
+/* Ligne wifi */
+.wifi-list {
+  padding: 8px;
+  margin: 0px;
+  border-radius: 10px;
+}
+
+/* Texte / icônes */
+.wifi-list-label {
+  color: #eaeaea;
+}
+
+/* Hover = fond sur la ligne */
+.wifi-list:hover {
+  background-color: #c7d5cd;
+}
+
+/* Hover = texte sombre */
+.wifi-list:hover .wifi-list-label {
+  color: #111111;
+}
+
+/* -----------------------------------------------------
  * Status wifi
  * ----------------------------------------------------- */
 .wifi-dot-on {
-    background-color: #2ecc71;
-    border-radius: 999px;
+  background-color: #2ecc71;
+  border-radius: 999px;
 }
 
 .wifi-dot-off {
-    background-color: #e74c3c;
-    border-radius: 999px;
+  background-color: #e74c3c;
+  border-radius: 999px;
 }
 
 /* -----------------------------------------------------
@@ -17,4 +53,12 @@
 .dim-label {
   opacity: 0.7;
   font-size: 14px;
+}
+
+/* -----------------------------------------------------
+ * Debug
+ * ----------------------------------------------------- */
+.debug {
+  background-color: rgba(255, 0, 0, 0.6);
+  border-radius: 999px;
 }

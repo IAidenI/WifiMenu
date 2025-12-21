@@ -13,6 +13,7 @@ export const MainWindow = GObject.registerClass(
                 default_width: 300,
                 default_height: 200,
             });
+            this.add_css_class("wifi-window");
 
             // Local pour l'instant
             let wifi = false;
@@ -33,7 +34,6 @@ export const MainWindow = GObject.registerClass(
             const list = new WifiList(wifi);
             const header = new WifiHeader(wifi, () => {
                 wifi = !wifi
-                console.log("[DEBUG] Wifi : " + wifi);
                 header.setActive(wifi);
                 list.setActive(wifi);
             });

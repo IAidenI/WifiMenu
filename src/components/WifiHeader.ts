@@ -6,7 +6,7 @@ export class WifiHeader {
     status: InstanceType<typeof Gtk.Box>;
     button: OnOffButton
 
-    constructor(active: boolean, onToogle: () => void) {
+    constructor(active: boolean, onToggle: () => void) {
         // Conteneur principal horizontal
         this.widget = new Gtk.Box({
             orientation: Gtk.Orientation.HORIZONTAL,
@@ -22,7 +22,7 @@ export class WifiHeader {
         this.widget.append(this.status);
 
         // Bouton pour se connecter/déconnecté du wifi
-        this.button = new OnOffButton(active ? "Connecté" : "Déconnecté", onToogle);
+        this.button = new OnOffButton(active ? "Wi-Fi activé" : "Wi-Fi désactivé", onToggle);
         this.widget.append(this.button.widget);
 
         this.setActive(active);
@@ -34,6 +34,6 @@ export class WifiHeader {
         this.status.remove_css_class("wifi-dot-off");
         this.status.add_css_class(active ? "wifi-dot-on" : "wifi-dot-off");
 
-        this.button.setLabel(active ? "Connecté" : "Déconnecté");
+        this.button.setLabel(active ? "Wi-Fi activé" : "Wi-Fi désactivé");
     }
 }

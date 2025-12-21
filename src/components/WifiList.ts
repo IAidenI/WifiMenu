@@ -1,5 +1,6 @@
 import GLib from "gi://GLib";
 import Gtk from "gi://Gtk?version=4.0";
+import { DisplayWifi, WifiInfos } from "./DisplayWifi.js";
 
 export class WifiList {
     widget: InstanceType<typeof Gtk.Box>
@@ -9,7 +10,7 @@ export class WifiList {
         // Conteneur principal vertical
         this.widget = new Gtk.Box({
             orientation: Gtk.Orientation.VERTICAL,
-            spacing: 8,
+            spacing: 3,
             halign: Gtk.Align.FILL,
             valign: Gtk.Align.FILL,
         });
@@ -50,15 +51,35 @@ export class WifiList {
         this.stopScan();
         this.setLoading();
 
+        // Des wifis random
+        const wifi1: WifiInfos = {
+            ssid: "OnePlus Nord 2T",
+            secure: true,
+            signal: 85,
+            connected: true
+        };
+        const wifi2: WifiInfos = {
+            ssid: "SFR_F8C8",
+            secure: true,
+            signal: 68,
+            connected: false
+        };
+        const wifi3: WifiInfos = {
+            ssid: "eduroam",
+            secure: false,
+            signal: 45,
+            connected: false
+        };
+
         this.scanSourceId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, 3000, () => {
-            this.setNetworks(["Wifi 1", "Wifi 2", "Wifi 3"]);
+            this.setNetworks([wifi1, wifi2, wifi3]);
             this.scanSourceId = null;
             return GLib.SOURCE_REMOVE;
         });
     }
 
     // Affiche la liste des réseaux Wi-Fi trouvés
-    private setNetworks(networks: string[]) {
+    private setNetworks(networks: WifiInfos[]) {
         this.clear();
 
         if (networks.length === 0) {
@@ -67,7 +88,7 @@ export class WifiList {
         }
 
         for (const n of networks) {
-            this.widget.append(new Gtk.Label({ label: n }));
+            this.widget.append(new DisplayWifi(n).widget);
         }
     }
 
