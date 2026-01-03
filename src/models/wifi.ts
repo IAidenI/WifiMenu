@@ -1,18 +1,36 @@
 export class WifiInfos {
     ssid: string;
+    bssid: string;
     secure: boolean;
+    security: string;
     signal: number;
     connected: boolean;
 
-    constructor(ssid: string = "", secure: boolean = false, signal: number = -1, connected: boolean = false) {
+    constructor(
+        ssid: string = "",
+        bssid: string = "",
+        secure: boolean = false,
+        security: string = "",
+        signal: number = -1,
+        connected: boolean = false
+    ) {
         this.ssid = ssid;
+        this.bssid = bssid;
         this.secure = secure;
+        this.security = security;
         this.signal = signal;
         this.connected = connected;
     }
 
     isEmpty(): boolean {
-        return (this.ssid === "" && this.secure === false && this.signal === -1 && this.connected === false);
+        return (
+            this.ssid === "" &&
+            this.bssid === "" &&
+            this.secure === false &&
+            this.security === "" &&
+            this.signal === -1 &&
+            this.connected === false
+        );
     }
 
     static empty(): WifiInfos {
@@ -52,19 +70,25 @@ export class WifiInfos {
             .map((l) => l.trim())
             .filter(Boolean)
             .map((line) => {
-                const [inUse = "", ssidRaw = "", signalRaw = "0", securityRaw = ""] =
-                    WifiInfos.splitNmcli(line);
+                const [
+                    inUse = "",
+                    bssidRaw = "",
+                    ssidRaw = "",
+                    signalRaw = "0",
+                    securityRaw = ""
+                ] = WifiInfos.splitNmcli(line);
 
                 const connected = inUse === "*";
                 const ssid = ssidRaw.length ? ssidRaw : "<hidden>";
+                const bssid = bssidRaw;
 
                 const signalParsed = Number.parseInt(signalRaw, 10);
                 const signal = Number.isFinite(signalParsed) ? signalParsed : 0;
 
-                const security = securityRaw.trim();
+                const security = (securityRaw ?? "").trim();
                 const secure = security !== "" && security !== "--";
 
-                return new WifiInfos(ssid, secure, signal, connected);
+                return new WifiInfos(ssid, bssid, secure, security, signal, connected);
             });
 
         return networks.length ? networks : [WifiInfos.empty()];

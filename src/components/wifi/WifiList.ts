@@ -7,12 +7,13 @@ import { WifiService } from "../../services/WifiService.js";
 export class WifiList {
     widget: InstanceType<typeof Gtk.ScrolledWindow>
     private listBox: InstanceType<typeof Gtk.ListBox>;
-    private wifi: WifiService;
+    private wifiService: WifiService;
     private loaded: boolean;
     private onLoadedChange?: (loaded: boolean) => void;
-    private scanId = 0;
+    private scanId: number = 0;
+    private selected?: DisplayWifi;
 
-    constructor(wifi: WifiService, onLoadedChange?: (loaded: boolean) => void) {
+    constructor(wifiService: WifiService, onLoadedChange?: (loaded: boolean) => void) {
         // Conteneur principal vertical
         this.widget = new Gtk.ScrolledWindow({
             hexpand: true,
@@ -30,12 +31,12 @@ export class WifiList {
         this.listBox.add_css_class("wifi-listbox");
         this.widget.set_child(this.listBox);
 
-        this.wifi = wifi;
+        this.wifiService = wifiService;
         this.loaded = false;
         this.onLoadedChange = onLoadedChange;
 
         // Applique l’état initial
-        this.setActive(this.wifi.isActive());
+        this.setActive(this.wifiService.isActive());
     }
 
     // Mets à jour la liste des wifis
@@ -60,7 +61,6 @@ export class WifiList {
         this.onLoadedChange?.(this.loaded);
     }
 
-
     // Supprime tous les widgets enfants de la liste
     private clear() {
         let child = this.listBox.get_first_child();
@@ -80,7 +80,7 @@ export class WifiList {
 
         // Start scan
         try {
-            const networks = await this.wifi.scanWithRetry();
+            const networks = await this.wifiService.scanWithRetry();
             if (id != this.scanId) return;
             this.setNetworks(networks);
         } catch (e) {
@@ -94,12 +94,13 @@ export class WifiList {
         this.setLoaded(false);
 
         // Des wifis random
-        const wifi1 = new WifiInfos("OnePlus Nord 2T", true, 85, true);
-        const wifi2 = new WifiInfos("SFR_F8C8", true, 68, false);
-        const wifi3 = new WifiInfos("eduroammmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm", false, 45, false);
+        const wifi1 = new WifiInfos("Cafe_Free_Wifi", "A2:11:3C:9F:44:10", false, "", 72, false);
+        const wifi2 = new WifiInfos("Maison_Perso", "5E:9F:03:A5:A3:55", true, "WPA2 WPA3", 88, true);
+        const wifi3 = new WifiInfos("eduroam", "7E:8F:CA:27:93:35", true, "WPA2 802.1X", 46, false);
+        const wifi4 = new WifiInfos("Entreprise_WPA3", "92:AF:10:7A:CC:21", true, "WPA3-ENT", 61, false);
 
         GLib.timeout_add(GLib.PRIORITY_DEFAULT, 3000, () => {
-            this.setNetworks([wifi1, wifi2, wifi3]);
+            this.setNetworks([wifi1, wifi2, wifi3, wifi4]);
             return GLib.SOURCE_REMOVE;
         });
     }
@@ -116,6 +117,8 @@ export class WifiList {
     private setNetworks(networks: WifiInfos[]) {
         this.clear();
 
+        this.selected = undefined;
+
         if (networks.length === 0) {
             this.listBox.append(new Gtk.Label({ label: "Aucun réseau trouvé" }));
             this.setLoaded(true);
@@ -124,7 +127,15 @@ export class WifiList {
 
         for (const n of networks) {
             const row = new Gtk.ListBoxRow();
-            row.set_child(new DisplayWifi(n).widget);
+            const item = new DisplayWifi(n, this.wifiService, (_wifi, _wdg) => {
+                // Déselectionne l'ancien
+                if (this.selected) this.selected.setSelected(false);
+
+                // Sélectionne le nouveau
+                item.setSelected(true);
+                this.selected = item;
+            });
+            row.set_child(item.widget);
             this.listBox.append(row);
         }
         this.setLoaded(true);

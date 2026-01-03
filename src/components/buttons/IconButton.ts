@@ -4,19 +4,15 @@ export class IconButton {
     widget: InstanceType<typeof Gtk.Button>;
     private icon: InstanceType<typeof Gtk.Image>;
 
-    constructor(icon: string, onClick: () => void) {
+    constructor(icon: string, pixel_size: number, onClick: () => void) {
         this.icon = new Gtk.Image({
             icon_name: icon,
-            pixel_size: 16
+            pixel_size: pixel_size
         });
 
-        this.widget = new Gtk.Box({
-            child: this.icon
-        });
+        this.widget = new Gtk.Button({ child: this.icon });
 
-        this.widget.connect("cliecked", () => {
-            onClick()
-        });
+        this.widget.connect("clicked", onClick);
     }
 
     setIcon(icon: string) {

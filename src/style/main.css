@@ -12,6 +12,16 @@ window.wifi-window>contents>.background {
 /* -----------------------------------------------------
  * Liste des wifis
  * ----------------------------------------------------- */
+
+/* Conteneur ListBox (fond transparent, pas de bordures) */
+.wifi-listbox {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  margin: 0;
+  padding: 0;
+}
+
 /* Ligne wifi */
 .wifi-list {
   padding: 8px;
@@ -26,7 +36,7 @@ window.wifi-window>contents>.background {
 
 /* Hover = fond sur la ligne */
 .wifi-list:hover {
-  background-color: #c7d5cd;
+  background-color: rgba(255, 255, 255, 0.6);
 }
 
 /* Hover = texte sombre */
@@ -34,25 +44,14 @@ window.wifi-window>contents>.background {
   color: #111111;
 }
 
-.wifi-listbox {
-  background: transparent;
+/* Sélection = même rendu que hover, mais fixe */
+.wifi-list-selected {
+  background-color: rgba(255, 255, 255, 0.6);
 }
 
-.wifi-listbox row {
-  background: transparent;
-  border: none;
-  box-shadow: none;
-  margin: 0;
-  padding: 0;
-}
-
-.wifi-row {
-  background: transparent;
-}
-
-.wifi-row:hover {
-  background: rgba(255,255,255,0.06);
-  border-radius: 10px;
+/* Texte sombre quand sélectionné */
+.wifi-list-selected .wifi-list-label {
+  color: #111111;
 }
 
 /* -----------------------------------------------------
